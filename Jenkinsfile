@@ -4,37 +4,37 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
+                sh 'mvn clean package'
             }
         }
         stage('Unit Tests') {
             steps {
-                echo 'Running Unit Tests...'
+                sh 'mvn test'
             }
         }
         stage('Code Analysis') {
             steps {
-                echo 'Analyzing Code...'
+                sh 'mvn sonar:sonar'
             }
         }
         stage('Security Scan') {
             steps {
-                echo 'Scanning for Security Issues...'
+                sh 'dependency-check.sh --project "MyProject" --scan .'
             }
         }
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to Staging Server...'
+                sh 'aws deploy ...'  // Add your specific AWS command here
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running Integration Tests on Staging...'
+                sh 'mvn integration-test'
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to Production Server...'
+                sh 'aws deploy ...'  // Add your specific AWS command here
             }
         }
     }
